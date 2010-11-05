@@ -12,34 +12,28 @@ import java.util.ArrayList;
  */
 public class Intersection
 {
-    private static int DefaultCrossTime = 15;
-
     private boolean debug = true;
 
-    private ArrayList<Road> roads= new ArrayList();
+    private ArrayList<Road> roads = new ArrayList();
+    
     private int crossTime = 0;
-
     private int currentCrossTime = 0;
 
-    private Statistic overallTopRoadWeight = new Statistic("Overall Top Road Weight");
-    private Statistic overallTopWaitTime = new Statistic("Overall Top Wait Time");
+    public Counter greenSignals = new Counter();
+    public Counter carsCrossed = new Counter();
 
-    private Counter greenSignals = new Counter();
-    private Counter carsCrossed = new Counter();
-
-    public void start(){
-        int testLength = 10000000;
+    public void start(int testLength){
 
         if(testLength > 1000){
             this.debug = false;
         }
-
-        // Create the Roads
-        for(int x = 0; x<4;x++)
-            this.roads.add(new Road(1, 10));
-
+            
         // Start the test
         test(testLength);
+    }
+
+    public void addRoad(Road newRoad){
+        this.roads.add(newRoad);
     }
 
     private void test( int testLength){
@@ -71,15 +65,7 @@ public class Intersection
             secondsPassed = secondsPassed + 1;
         }
 
-        System.out.println(testLength + " seconds of testing completed.");
-        System.out.println("Highest Road Weight Achieved: " + this.overallTopRoadWeight.getHighest() + ". (Road " + this.overallTopRoadWeight.getHighestRoad() + ")");
-        System.out.println("Highest Road Wait Time Achieved: " + this.overallTopWaitTime.getHighest() + " seconds. (Road " + this.overallTopWaitTime.getHighestRoad() + ")");
-        System.out.println("Average Road Weight: " + this.overallTopRoadWeight.getAverage() + ".");
-        System.out.println("Average Road Wait Time: " + this.overallTopWaitTime.getAverage() + " seconds.");
-        System.out.println("Lowest Road Weight Achieved: " + this.overallTopRoadWeight.getLowest() + ". (Road " + this.overallTopRoadWeight.getLowestRoad() + ")");
-        System.out.println("Lowest Road Wait Time Achieved: " + this.overallTopWaitTime.getLowest() + " seconds. (Road " + this.overallTopWaitTime.getLowestRoad() + ")");
-        System.out.println("Total Green Lights Given: " + this.greenSignals.getNum());
-        System.out.println("Total Cars Crossed: " + this.carsCrossed.getNum());
+        return;
     }
 
     private void tick(int secondsPassed){
@@ -88,10 +74,6 @@ public class Intersection
 
             // Tell lights to calculate their values
             this.roads.get(i).tick(secondsPassed);
-
-            // Record Statistics
-            this.overallTopWaitTime.record(this.roads.get(i).getWaitTime(), i);
-            this.overallTopRoadWeight.record(this.roads.get(i).getWeight(), i);
         }
         
     }

@@ -24,6 +24,10 @@ public class Statistic {
         this.average = 0;
     }
 
+    public void record(int newNumber){
+        record(newNumber, 0);
+    }
+
     public void record(int newNumber, int road){
         least(newNumber, road);
         most(newNumber, road);

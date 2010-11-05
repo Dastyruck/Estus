@@ -10,14 +10,21 @@ package mainPack;
  */
 public class Road implements TickBased {
 
-    static int carCrossTime = 4;
-    static int MaxCars = 20;
+    static int carCrossTime = Stats.carCrossTime;
+    static int MaxCars = Stats.maxCarsTracked;
 
     int weight = 0;
     int tickValue = 0;
     int waitTime = 0;
     int cars = 1;
-    
+
+    public Statistic TopWeight = new Statistic("Overall Top Road Weight");
+    public Statistic TopWaitTime = new Statistic("Overall Top Wait Time");
+
+    public Road(int initialWeight){
+        this(initialWeight, Stats.carWeightPerSec);
+    }
+
     public Road(int initialWeight, int tickValue){
         this.weight = initialWeight;
         this.tickValue = tickValue;
@@ -43,6 +50,10 @@ public class Road implements TickBased {
         if(secondsPassed % 5 == 0){
             addCar();
         }
+
+        // Record Statistics
+        this.TopWaitTime.record(getWaitTime());
+        this.TopWeight.record(getWeight());
     }
 
     private void addCar(){

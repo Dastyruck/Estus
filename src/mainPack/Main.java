@@ -16,6 +16,7 @@ public class Main {
         
         // Create and add roads to the intersection
         Intersection intersection = new Intersection();
+        GarbageCollector chuck = new GarbageCollector();
         ArrayList<Road> roads = new ArrayList();
         for(int x = 0; x < Stats.numRoads; x++){
 
@@ -66,6 +67,7 @@ public class Main {
         System.out.println("Total Cars Crossed: " + intersection.carsCrossed.getNum());
 
         System.out.println("Average Cars Crossed: " + carsCrossing.getAverage());
+        System.exit(0);
     }
 
 }

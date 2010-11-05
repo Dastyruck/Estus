@@ -12,13 +12,13 @@ public class Intersection
 {
 
     public static void main(String [] args){
-        int testLength = 10000000;
+        int testLength = 1000000;
 
         Road roads[] = new Road[4];
-        roads[0] = new Road(2, 15);
-        roads[1] = new Road(3, 35);
-        roads[2] = new Road(4, 55);
-        roads[3] = new Road(5, 105);
+        roads[0] = new Road(2, 1);
+        roads[1] = new Road(3, 2);
+        roads[2] = new Road(4, 3);
+        roads[3] = new Road(5, 4);
         
         test(roads, testLength);
     }
@@ -32,6 +32,13 @@ public class Intersection
 
         int secondsPassed = 1;
         int numRoads = roads.length;
+
+        // The amount of time it takes for cars to get accross;
+        int crossTime = 0;
+        int defaultCrossTime = 15;
+
+        // How long the current crossing has gone on
+        int crossTimePassed = 0;
         
         // Test Processing
         while(secondsPassed <= testLength){
@@ -53,7 +60,23 @@ public class Intersection
                 overallTopWaitRoad = highestRoad;
             }
 
-            roads[highestRoad].go();
+            // Wait for cars to pass before starting a new road
+            if(crossTimePassed == crossTime){
+
+                // Figure out the cross time needed
+                crossTimePassed = 0;
+                crossTime = roads[highestRoad].getCrossTime();
+
+                // Lets the cars go
+                roads[highestRoad].go();
+
+            }else{
+
+                // Increment until cross time reached
+                crossTimePassed++;
+                
+            }
+            
 
             if(highestRoadValue > overallTopRoadWeight){
                 overallTopRoad = highestRoad;

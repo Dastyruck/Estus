@@ -11,11 +11,12 @@ package mainPack;
 public class Road implements TickBased {
 
     static int carCrossTime = 7;
+    static int MaxCars = 20;
 
     int weight = 0;
     int tickValue = 0;
     int waitTime = 0;
-    int cars = 5;
+    int cars = 1;
     
     public Road(int initialWeight, int tickValue){
         this.weight = initialWeight;
@@ -25,15 +26,28 @@ public class Road implements TickBased {
     public void go(){
         this.weight = 0;
         this.waitTime = 0;
-        //this.cars = 0;
+        this.cars = 0;
     }
 
     public void tick(){
         this.waitTime += 1;
-        this.weight += this.tickValue;
 
-        if(this.waitTime % 1 == 0){
-            //this.cars += 1;
+        // If the wait time is over than 60, the weight per second is doubled
+        if(this.waitTime < 60){
+            this.weight += this.tickValue * this.cars;
+        }else{
+            this.weight += (this.tickValue * 2) * this.cars;
+        }
+        
+
+        if(this.waitTime % 2 == 0){
+            addCar();
+        }
+    }
+
+    private void addCar(){
+        if(this.cars <= Road.MaxCars){
+            this.cars += 1;
         }
     }
 

@@ -10,85 +10,108 @@ package mainPack;
  */
 public class Intersection
 {
+    private static int DefaultCrossTime = 15;
 
-    public static void main(String [] args){
+    private boolean debug = true;
+
+    private Road roads[] = new Road[4];
+    private int crossTime = 0;
+
+    private int currentCrossTime = 0;
+
+    private Statistic overallTopRoadWeight = new Statistic("Overall Top Road Weight");
+    private Statistic overallTopWaitTime = new Statistic("Overall Top Wait Time");
+
+    public void start(){
         int testLength = 1000000;
 
-        Road roads[] = new Road[4];
-        roads[0] = new Road(2, 1);
-        roads[1] = new Road(3, 2);
-        roads[2] = new Road(4, 3);
-        roads[3] = new Road(5, 4);
-        
-        test(roads, testLength);
+        if(testLength > 1000){
+            this.debug = false;
+        }
+
+        // Create the Roads
+        this.roads[0] = new Road(1, 10);
+        this.roads[1] = new Road(1, 10);
+        this.roads[2] = new Road(1, 10);
+        this.roads[3] = new Road(1, 10);
+
+        // Start the test
+        test(testLength);
     }
 
-    private static void test(Road [] roads, int testLength){
-        int overallTopRoad = 0;
-        int overallTopRoadWeight = 0;
-
-        int overallTopWaitRoad = 0;
-        int overallTopWaitTime = 0;
-
+    private void test( int testLength){
+        
         int secondsPassed = 1;
-        int numRoads = roads.length;
-
-        // The amount of time it takes for cars to get accross;
-        int crossTime = 0;
-        int defaultCrossTime = 15;
-
-        // How long the current crossing has gone on
-        int crossTimePassed = 0;
         
         // Test Processing
         while(secondsPassed <= testLength){
 
-            for(int i=0; i < numRoads; i++){
-                roads[i].tick();
-            }
+            log(secondsPassed);
 
-            int roadWeights[] = new int[roads.length];
-            for(int i=0; i < numRoads; i++){
-                roadWeights[i] = roads[i].getWeight();
-            }
-
-            int highestRoad = maxByKey(roadWeights);
-            int highestRoadValue = maxByValue(roadWeights);
-
-            if(roads[highestRoad].getWaitTime() > overallTopWaitTime){
-                overallTopWaitTime = roads[highestRoad].getWaitTime();
-                overallTopWaitRoad = highestRoad;
-            }
+            tick();
 
             // Wait for cars to pass before starting a new road
-            if(crossTimePassed == crossTime){
+            if(this.currentCrossTime == this.crossTime){
 
-                // Figure out the cross time needed
-                crossTimePassed = 0;
-                crossTime = roads[highestRoad].getCrossTime();
+                this.crossTime = changeRoads();
+                this.currentCrossTime = 0;
 
-                // Lets the cars go
-                roads[highestRoad].go();
+                log("Starting Traffic ("+ this.crossTime +")");
 
             }else{
 
                 // Increment until cross time reached
-                crossTimePassed++;
+                this.currentCrossTime++;
                 
             }
             
-
-            if(highestRoadValue > overallTopRoadWeight){
-                overallTopRoad = highestRoad;
-                overallTopRoadWeight = highestRoadValue;
-            }
-
             secondsPassed = secondsPassed + 1;
         }
 
         System.out.println(testLength + " seconds of testing completed.");
-        System.out.println("Highest Road Weight Achieved: " + overallTopRoadWeight + ". (Road " + overallTopRoad + ")");
-        System.out.println("Highest Road Wait Time Achieved: " + overallTopWaitTime + " seconds. (Road " + overallTopWaitRoad + ")");
+        System.out.println("Highest Road Weight Achieved: " + this.overallTopRoadWeight.getNumber() + ". (Road " + this.overallTopRoadWeight.getRoad() + ")");
+        System.out.println("Highest Road Wait Time Achieved: " + this.overallTopWaitTime.getNumber() + " seconds. (Road " + this.overallTopWaitTime.getRoad() + ")");
+        System.out.println("Average Road Weight: " + this.overallTopRoadWeight.getAverage() + ".");
+        System.out.println("Average Road Wait Time: " + this.overallTopWaitTime.getAverage() + " seconds.");
+    }
+
+    private void tick(){
+
+        for(int i=0; i < this.roads.length; i++){
+
+            // Tell lights to calculate their values
+            this.roads[i].tick();
+
+            // Record Statistics
+            this.overallTopWaitTime.most(this.roads[i].getWaitTime(), i);
+            this.overallTopRoadWeight.most(this.roads[i].getWeight(), i);
+        }
+        
+    }
+
+    private int changeRoads(){
+
+        // Get the road with the most weight
+        int highestRoad = getHighestRoad();
+
+        int crossTime = this.roads[highestRoad].getCrossTime();
+
+        // Lets the cars go
+        this.roads[highestRoad].go();
+
+        return crossTime;
+
+    }
+
+    private int getHighestRoad(){
+        int roadWeights[] = new int[this.roads.length];
+        for(int i=0; i < this.roads.length; i++){
+            log("Road " + i + " has " + roads[i].getWeight());
+            roadWeights[i] = roads[i].getWeight();
+        }
+        int highestRoad = maxByKey(roadWeights);
+
+        return highestRoad;
     }
 
     private static int maxByValue(int[] t) {
@@ -113,5 +136,17 @@ public class Intersection
             }
         }
         return maximumKey;
+    }
+
+    private void log(String message){
+        if(this.debug == true){
+            System.out.println(message);
+        }
+    }
+
+    private void log(int message){
+        if(this.debug == true){
+            System.out.println(message);
+        }
     }
 }

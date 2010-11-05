@@ -10,7 +10,7 @@ package mainPack;
  */
 public class Road implements TickBased {
 
-    static int carCrossTime = 5;
+    static int carCrossTime = 4;
     static int MaxCars = 20;
 
     int weight = 0;

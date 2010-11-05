@@ -13,6 +13,10 @@ public class Statistic {
 
     private String name;
     private int number;
+    private int lowest;
+    private int lowestRoad;
+    private int highest;
+    private int highestRoad;
     private int road;
     private int average;
     public Statistic (String name){
@@ -20,20 +24,24 @@ public class Statistic {
         this.average = 0;
     }
 
-    public void least(int newNumber, int road){
-        if(newNumber < this.number){
-            this.number = newNumber;
-            this.road = road;
-        }
+    public void record(int newNumber, int road){
+        least(newNumber, road);
+        most(newNumber, road);
         average(newNumber);
     }
 
-    public void most(int newNumber, int road){
-        if(newNumber > this.number){
-            this.number = newNumber;
-            this.road = road;
+    public void least(int newNumber, int road){
+        if(newNumber < this.lowest){
+            this.lowest = newNumber;
+            this.lowestRoad = road;
         }
-        average(newNumber);
+    }
+
+    public void most(int newNumber, int road){
+        if(newNumber > this.highest){
+            this.highest = newNumber;
+            this.highestRoad = road;
+        }
     }
 
     public void average(int num){
@@ -48,8 +56,20 @@ public class Statistic {
         return this.average;
     }
 
-    public int getNumber(){
-        return this.number;
+    public int getLowest(){
+        return this.lowest;
+    }
+
+    public int getLowestRoad(){
+        return this.lowestRoad;
+    }
+
+    public int getHighest(){
+        return this.highest;
+    }
+
+    public int getHighestRoad(){
+        return this.highestRoad;
     }
 
     public int getRoad(){

@@ -23,7 +23,7 @@ public class Intersection
     private Statistic overallTopWaitTime = new Statistic("Overall Top Wait Time");
 
     public void start(){
-        int testLength = 1000000;
+        int testLength = 1000000000;
 
         if(testLength > 1000){
             this.debug = false;
@@ -69,10 +69,12 @@ public class Intersection
         }
 
         System.out.println(testLength + " seconds of testing completed.");
-        System.out.println("Highest Road Weight Achieved: " + this.overallTopRoadWeight.getNumber() + ". (Road " + this.overallTopRoadWeight.getRoad() + ")");
-        System.out.println("Highest Road Wait Time Achieved: " + this.overallTopWaitTime.getNumber() + " seconds. (Road " + this.overallTopWaitTime.getRoad() + ")");
+        System.out.println("Highest Road Weight Achieved: " + this.overallTopRoadWeight.getHighest() + ". (Road " + this.overallTopRoadWeight.getHighestRoad() + ")");
+        System.out.println("Highest Road Wait Time Achieved: " + this.overallTopWaitTime.getHighest() + " seconds. (Road " + this.overallTopWaitTime.getHighestRoad() + ")");
         System.out.println("Average Road Weight: " + this.overallTopRoadWeight.getAverage() + ".");
         System.out.println("Average Road Wait Time: " + this.overallTopWaitTime.getAverage() + " seconds.");
+        System.out.println("Lowest Road Weight Achieved: " + this.overallTopRoadWeight.getLowest() + ". (Road " + this.overallTopRoadWeight.getLowestRoad() + ")");
+        System.out.println("Lowest Road Wait Time Achieved: " + this.overallTopWaitTime.getLowest() + " seconds. (Road " + this.overallTopWaitTime.getLowestRoad() + ")");
     }
 
     private void tick(){
@@ -83,8 +85,8 @@ public class Intersection
             this.roads[i].tick();
 
             // Record Statistics
-            this.overallTopWaitTime.most(this.roads[i].getWaitTime(), i);
-            this.overallTopRoadWeight.most(this.roads[i].getWeight(), i);
+            this.overallTopWaitTime.record(this.roads[i].getWaitTime(), i);
+            this.overallTopRoadWeight.record(this.roads[i].getWeight(), i);
         }
         
     }

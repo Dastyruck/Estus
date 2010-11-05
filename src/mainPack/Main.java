@@ -12,8 +12,6 @@ import java.util.ArrayList;
  */
 public class Main {
 
-    
-
     public static void main(String [] args){
         
         // Create and add roads to the intersection
@@ -45,12 +43,14 @@ public class Main {
 
         Statistic overallTopRoadWeight = new Statistic("Overall Top Road Weight");
         Statistic overallTopWaitTime = new Statistic("Overall Top Wait Time");
+        Statistic carsCrossing = new Statistic("Cars Crossing Per Green");
 
         System.out.println("Size: " + roads.size());
 
         for(int x = 0; x < roads.size(); x++){
-            overallTopRoadWeight.record(roads.get(x).TopWeight.getHighest(), x);
-            overallTopWaitTime.record(roads.get(x).TopWaitTime.getHighest(), x);
+            overallTopRoadWeight.record(roads.get(x).TopWeight.getAverage(), x);
+            overallTopWaitTime.record(roads.get(x).TopWaitTime.getAverage(), x);
+            carsCrossing.record(roads.get(x).CarsCrossing.getAverage(), x);
         }
 
         System.out.println("Highest Road Weight Achieved: " + overallTopRoadWeight.getHighest() + ". (Road " + overallTopRoadWeight.getHighestRoad() + ")");
@@ -64,6 +64,8 @@ public class Main {
 
         System.out.println("Total Green Lights Given: " + intersection.greenSignals.getNum());
         System.out.println("Total Cars Crossed: " + intersection.carsCrossed.getNum());
+
+        System.out.println("Average Cars Crossed: " + carsCrossing.getAverage());
     }
 
 }

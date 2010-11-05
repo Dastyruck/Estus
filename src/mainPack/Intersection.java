@@ -24,7 +24,7 @@ public class Intersection
 
     public void start(int testLength){
 
-        if(testLength > 1000){
+        if(testLength > 100){
             this.debug = false;
         }
             

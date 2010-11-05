@@ -13,6 +13,8 @@ public class Stats {
     // The number of roads connecting to the intersection
     public static int numRoads = 4;
 
+    public static int addCarInterval = 10;
+
     /*
      * Car Numbers
      */
@@ -29,5 +31,8 @@ public class Stats {
 
     // Amount of points generated per car per second
     public static int carWeightPerSec = 1;
+
+    // Multiplies carWeightPerSec by this amount after 1 minute of waiting
+    public static int carWeightMinuteMultiplier = 2;
 
 }

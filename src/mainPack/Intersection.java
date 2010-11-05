@@ -22,8 +22,11 @@ public class Intersection
     private Statistic overallTopRoadWeight = new Statistic("Overall Top Road Weight");
     private Statistic overallTopWaitTime = new Statistic("Overall Top Wait Time");
 
+    private Counter greenSignals = new Counter();
+    private Counter carsCrossed = new Counter();
+
     public void start(){
-        int testLength = 1000000000;
+        int testLength = 10000000;
 
         if(testLength > 1000){
             this.debug = false;
@@ -48,7 +51,7 @@ public class Intersection
 
             log(secondsPassed);
 
-            tick();
+            tick(secondsPassed);
 
             // Wait for cars to pass before starting a new road
             if(this.currentCrossTime == this.crossTime){
@@ -75,14 +78,16 @@ public class Intersection
         System.out.println("Average Road Wait Time: " + this.overallTopWaitTime.getAverage() + " seconds.");
         System.out.println("Lowest Road Weight Achieved: " + this.overallTopRoadWeight.getLowest() + ". (Road " + this.overallTopRoadWeight.getLowestRoad() + ")");
         System.out.println("Lowest Road Wait Time Achieved: " + this.overallTopWaitTime.getLowest() + " seconds. (Road " + this.overallTopWaitTime.getLowestRoad() + ")");
+        System.out.println("Total Green Lights Given: " + this.greenSignals.getNum());
+        System.out.println("Total Cars Crossed: " + this.carsCrossed.getNum());
     }
 
-    private void tick(){
+    private void tick(int secondsPassed){
 
         for(int i=0; i < this.roads.length; i++){
 
             // Tell lights to calculate their values
-            this.roads[i].tick();
+            this.roads[i].tick(secondsPassed);
 
             // Record Statistics
             this.overallTopWaitTime.record(this.roads[i].getWaitTime(), i);
@@ -98,8 +103,12 @@ public class Intersection
 
         int crossTime = this.roads[highestRoad].getCrossTime();
 
+        this.greenSignals.increase();
+        this.carsCrossed.increase(this.roads[highestRoad].getCars());
+
         // Lets the cars go
         this.roads[highestRoad].go();
+        
 
         return crossTime;
 

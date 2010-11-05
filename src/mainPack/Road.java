@@ -10,7 +10,7 @@ package mainPack;
  */
 public class Road implements TickBased {
 
-    static int carCrossTime = 7;
+    static int carCrossTime = 5;
     static int MaxCars = 20;
 
     int weight = 0;
@@ -29,7 +29,7 @@ public class Road implements TickBased {
         this.cars = 0;
     }
 
-    public void tick(){
+    public void tick(int secondsPassed){
         this.waitTime += 1;
 
         // If the wait time is over than 60, the weight per second is doubled
@@ -40,7 +40,7 @@ public class Road implements TickBased {
         }
         
 
-        if(this.waitTime % 2 == 0){
+        if(secondsPassed % 5 == 0){
             addCar();
         }
     }

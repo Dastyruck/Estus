@@ -12,6 +12,6 @@ package mainPack;
 public interface TickBased {
 
     // This method allows the object to update when a second in time has passed
-    public void tick();
+    public void tick(int secondsPassed);
 
 }

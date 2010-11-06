@@ -16,7 +16,7 @@ public class OncomingCarAlgorithm {
         this.seconds += 1;
 
         // Only run the calculation every 6 seconds
-        if(this.seconds % 6 == 0){
+        if(this.seconds % 1 == 0){
             if(oncomingCar()){
                 this.road.addCar();
             }
@@ -24,9 +24,8 @@ public class OncomingCarAlgorithm {
     }
 
     private boolean oncomingCar(){
-
-        double randNum = Math.random() * 1000000;
-        double numLimit = 999999;
+        double randNum = Math.random() * 10;
+        double numLimit = 9;
 
         if(randNum > numLimit){
             return true;

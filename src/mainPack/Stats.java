@@ -4,7 +4,7 @@ public class Stats {
     /*
      * Test Numbers
      */
-    public static int testLength = 10000000;
+    public static int testLength = 10000;
 
     /*
      * Intersection Numbers

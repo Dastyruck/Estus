@@ -39,4 +39,7 @@ public class Stats {
     // Multiplies carWeightPerSec by this amount after 1 minute of waiting
     public static int carWeightMinuteMultiplier = 2;
 
+    // Multiplies carWeightPerSec by this amount after 1 minute of waiting
+    public static int maxCrossTime = 25;
+
 }

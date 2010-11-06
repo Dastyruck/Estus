@@ -42,9 +42,19 @@ public class Road implements TickBased {
     public void go(){
         this.weight = 0;
         this.waitTime = 0;
+        int carsLeaving = (int)Math.floor(Stats.maxCrossTime/Road.carCrossTime);
+        if(carsLeaving > this.cars)
+        {
+            this.CarsCrossing.record(this.cars);
+            this.cars = 0;
+        }
+        else
+        {
+            this.CarsCrossing.record(carsLeaving);
+            this.cars -= carsLeaving;
+        }
 
-        this.CarsCrossing.record(this.cars);
-
+        
         this.r.gc();
     }
 
@@ -103,7 +113,8 @@ public class Road implements TickBased {
 
     // Returns the cross time need for all cars to cross
     public int getCrossTime(){
-        return this.cars * Road.carCrossTime;
+        int crossTime = (int)Math.floor(Stats.maxCrossTime/Road.carCrossTime)*Road.carCrossTime;
+        return crossTime;
     }
 
 }

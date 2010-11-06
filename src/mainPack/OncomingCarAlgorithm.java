@@ -4,6 +4,8 @@ public class OncomingCarAlgorithm {
     private int carsPerHour = Stats.defaultCarsPerHour;
     private int seconds = 0;
     private Road road;
+
+    public Counter cars = new Counter();
     public OncomingCarAlgorithm(Road parentRoad){
         this.road = parentRoad;
 
@@ -19,6 +21,7 @@ public class OncomingCarAlgorithm {
         if(this.seconds % 1 == 0){
             if(oncomingCar()){
                 this.road.addCar();
+                this.cars.increase();
             }
         }
     }

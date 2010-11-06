@@ -85,8 +85,17 @@ public class Intersection
 
         int crossTime = this.roads.get(highestRoad).getCrossTime();
 
+        // Record the green light
         this.greenSignals.increase();
-        this.carsCrossed.increase(this.roads.get(highestRoad).getCars());
+
+        // Calculate how many cars are leaving and add it to the counter
+        int maxCarsLeaving = (int)Math.floor(Stats.maxCrossTime/Road.carCrossTime);
+
+        int carsLeaving = this.roads.get(highestRoad).getCars();
+        if(carsLeaving > maxCarsLeaving){
+            carsLeaving = maxCarsLeaving;
+        }
+        this.carsCrossed.increase(carsLeaving);
 
         // Lets the cars go
         this.roads.get(highestRoad).go();

@@ -49,6 +49,7 @@ public class Main {
         Statistic overallTopRoadWeight = new Statistic("Overall Top Road Weight");
         Statistic overallTopWaitTime = new Statistic("Overall Top Wait Time");
         Statistic carsCrossing = new Statistic("Cars Crossing Per Green");
+        Counter carsLoaded = new Counter();
 
         System.out.println("Size: " + roads.size());
 
@@ -56,6 +57,7 @@ public class Main {
             overallTopRoadWeight.record(roads.get(x).TopWeight.getAverage(), x);
             overallTopWaitTime.record(roads.get(x).TopWaitTime.getAverage(), x);
             carsCrossing.record(roads.get(x).CarsCrossing.getAverage(), x);
+            carsLoaded.increase(roads.get(x).o.cars.getNum());
         }
 
         System.out.println("Highest Road Weight Achieved: " + overallTopRoadWeight.getHighest() + ". (Road " + overallTopRoadWeight.getHighestRoad() + ")");
@@ -69,6 +71,7 @@ public class Main {
 
         System.out.println("Total Green Lights Given: " + intersection.greenSignals.getNum());
         System.out.println("Total Cars Crossed: " + intersection.carsCrossed.getNum());
+        System.out.println("Total Cars Loaded: " + carsLoaded.getNum());
 
         System.out.println("Average Cars Crossed: " + carsCrossing.getAverage());
         System.exit(0);

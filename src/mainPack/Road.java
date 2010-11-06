@@ -26,7 +26,7 @@ public class Road implements TickBased {
     public Statistic TopWaitTime = new Statistic("Overall Top Wait Time");
     public Statistic CarsCrossing = new Statistic("Cars Crossing Per Light");
 
-    private OncomingCarAlgorithm o;
+    public OncomingCarAlgorithm o;
 
     public Road(int initialWeight){
         this(initialWeight, Stats.carWeightPerSec);
@@ -42,16 +42,23 @@ public class Road implements TickBased {
     public void go(){
         this.weight = 0;
         this.waitTime = 0;
-        int carsLeaving = (int)Math.floor(Stats.maxCrossTime/Road.carCrossTime);
-        if(carsLeaving > this.cars)
-        {
-            this.CarsCrossing.record(this.cars);
-            this.cars = 0;
+
+        int maxCarsLeaving = (int)Math.floor(Stats.maxCrossTime/Road.carCrossTime);
+
+        int carsLeaving = this.cars;
+        if(carsLeaving > maxCarsLeaving){
+            carsLeaving = maxCarsLeaving;
         }
-        else
+
+        if(carsLeaving < this.cars)
         {
             this.CarsCrossing.record(carsLeaving);
             this.cars -= carsLeaving;
+        }
+        else
+        {
+            this.CarsCrossing.record(this.cars);
+            this.cars = 0;
         }
 
         
@@ -113,7 +120,14 @@ public class Road implements TickBased {
 
     // Returns the cross time need for all cars to cross
     public int getCrossTime(){
-        int crossTime = (int)Math.floor(Stats.maxCrossTime/Road.carCrossTime)*Road.carCrossTime;
+        int maxCars = (int)Math.floor(Stats.maxCrossTime/Road.carCrossTime);
+
+        int carsCrossing = this.cars;
+        if(carsCrossing > maxCars){
+            carsCrossing = maxCars;
+        }
+
+        int crossTime = carsCrossing * Road.carCrossTime;
         return crossTime;
     }
 

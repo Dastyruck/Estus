@@ -13,10 +13,10 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String [] args){
-        
+        GarbageCollector chuck = new GarbageCollector();
+
         // Create and add roads to the intersection
         Intersection intersection = new Intersection();
-        GarbageCollector chuck = new GarbageCollector();
         ArrayList<Road> roads = new ArrayList();
         for(int x = 0; x < Stats.numRoads; x++){
 
@@ -25,6 +25,10 @@ public class Main {
             intersection.addRoad(newRoad);
             
         }
+
+        Road newRoad = new HighFreqRoad(1);
+        roads.add(newRoad);
+        intersection.addRoad(newRoad);
 
         // Decide how long to run the test for
         if(args.length > 0){

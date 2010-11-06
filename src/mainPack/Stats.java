@@ -11,9 +11,9 @@ public class Stats {
      */
     
     // The number of roads connecting to the intersection
-    public static int numRoads = 4;
+    public static int numRoads = 3;
 
-    public static int addCarInterval = 10;
+    public static int addCarInterval = 60;
 
     /*
      * Car Numbers

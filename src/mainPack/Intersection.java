@@ -78,6 +78,16 @@ public class Intersection
         
     }
 
+    public int numCarsLeft()
+    {
+        int count = 0;
+        for(int x = 0;x<roads.size();x++)
+        {
+            count += roads.get(x).getCars();
+        }
+        return count;
+    }
+
     private int changeRoads(){
 
         // Get the road with the most weight

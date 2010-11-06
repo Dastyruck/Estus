@@ -74,6 +74,8 @@ public class Main {
         System.out.println("Total Cars Loaded: " + carsLoaded.getNum());
 
         System.out.println("Average Cars Crossed: " + carsCrossing.getAverage());
+
+        System.out.println("Cars Left Waiting: " + intersection.numCarsLeft());
         System.exit(0);
     }
 

@@ -18,7 +18,7 @@ public class OncomingCarAlgorithm {
         this.seconds += 1;
 
         // Only run the calculation every 6 seconds
-        if(this.seconds % 1 == 0){
+        if(this.seconds % 3 == 0){
             if(oncomingCar()){
                 this.road.addCar();
                 this.cars.increase();

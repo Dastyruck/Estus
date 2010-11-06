@@ -15,10 +15,12 @@ public class Road implements TickBased {
     static int MaxCars = Stats.maxCarsTracked;
     private Runtime r = Runtime.getRuntime();
 
+    protected int addCarInterval = Stats.addCarInterval;
+
     int weight = 0;
     int tickValue = 0;
     int waitTime = 0;
-    ArrayList<Car> cars = new ArrayList();
+    int cars = 0;
 
     public Statistic TopWeight = new Statistic("Overall Top Road Weight");
     public Statistic TopWaitTime = new Statistic("Overall Top Wait Time");
@@ -37,13 +39,7 @@ public class Road implements TickBased {
         this.weight = 0;
         this.waitTime = 0;
 
-        this.CarsCrossing.record(this.cars.size());
-
-        // Tell each car to go and remove it from the array
-        for(int i=0; i < this.cars.size(); i++){
-            this.cars.get(i).go();
-            this.cars.remove(i);
-        }
+        this.CarsCrossing.record(this.cars);
 
         this.r.gc();
     }
@@ -51,7 +47,7 @@ public class Road implements TickBased {
     public void tick(int secondsPassed){
         this.waitTime += 1;
 
-        int numCars = this.cars.size();
+        int numCars = this.cars;
         if(numCars > Stats.maxCarsTracked){
             numCars = Stats.maxCarsTracked;
         }
@@ -64,13 +60,8 @@ public class Road implements TickBased {
         }
         
         // Add a new car at set intervals
-        if(secondsPassed % Stats.addCarInterval == 0){
+        if(secondsPassed % this.addCarInterval == 0){
            addCar();
-        }
-
-        // Tick each car
-        for(int i=0; i < this.cars.size(); i++){
-            this.cars.get(i).tick(secondsPassed);
         }
 
         // Record Statistics
@@ -79,11 +70,11 @@ public class Road implements TickBased {
     }
 
     public void addCar(){
-        this.cars.add(new Car());
+        this.cars += 1;
     }
 
     public void addCar(Car newCar){
-        this.cars.add(newCar);
+        this.cars += 1;
     }
 
     // Gets the current weight value
@@ -93,7 +84,7 @@ public class Road implements TickBased {
 
     // Returns the number of cars currently waiting
     public int getCars(){
-        return this.cars.size();
+        return this.cars;
     }
 
     // Returns the amount of time since last go()
@@ -103,7 +94,7 @@ public class Road implements TickBased {
 
     // Returns the cross time need for all cars to cross
     public int getCrossTime(){
-        return this.cars.size() * Road.carCrossTime;
+        return this.cars * Road.carCrossTime;
     }
 
 }

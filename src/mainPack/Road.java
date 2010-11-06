@@ -26,6 +26,8 @@ public class Road implements TickBased {
     public Statistic TopWaitTime = new Statistic("Overall Top Wait Time");
     public Statistic CarsCrossing = new Statistic("Cars Crossing Per Light");
 
+    private OncomingCarAlgorithm o;
+
     public Road(int initialWeight){
         this(initialWeight, Stats.carWeightPerSec);
     }
@@ -33,6 +35,8 @@ public class Road implements TickBased {
     public Road(int initialWeight, int tickValue){
         this.weight = initialWeight;
         this.tickValue = tickValue;
+
+        this.o = new OncomingCarAlgorithm(this);
     }
 
     public void go(){
@@ -45,7 +49,11 @@ public class Road implements TickBased {
     }
 
     public void tick(int secondsPassed){
-        this.waitTime += 1;
+
+        // Only record if there are cars
+        if(this.cars > 0){
+            this.waitTime += 1;
+        }
 
         int numCars = this.cars;
         if(numCars > Stats.maxCarsTracked){
@@ -59,10 +67,7 @@ public class Road implements TickBased {
             this.weight += (this.tickValue * Stats.carWeightMinuteMultiplier) * numCars;
         }
         
-        // Add a new car at set intervals
-        if(secondsPassed % this.addCarInterval == 0){
-           addCar();
-        }
+        this.o.tick();
 
         // Record Statistics
         this.TopWaitTime.record(getWaitTime());
@@ -75,6 +80,10 @@ public class Road implements TickBased {
 
     public void addCar(Car newCar){
         this.cars += 1;
+    }
+
+    public int getFrequency(){
+        return this.addCarInterval;
     }
 
     // Gets the current weight value

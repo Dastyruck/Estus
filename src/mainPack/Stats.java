@@ -4,7 +4,7 @@ public class Stats {
     /*
      * Test Numbers
      */
-    public static int testLength = 100000;
+    public static int testLength = 10000000;
 
     /*
      * Intersection Numbers
@@ -13,7 +13,11 @@ public class Stats {
     // The number of roads connecting to the intersection
     public static int numRoads = 3;
 
+    // How many seconds between adding more cars to a road
     public static int addCarInterval = 60;
+    public static int addCarIntervalHigh = 30;
+
+    public static int defaultCarsPerHour = 100;
 
     /*
      * Car Numbers

@@ -11,10 +11,14 @@ package mainPack;
  */
 class HighFreqRoad extends Road{
 
-    protected int addCarInterval = 10;
+    protected int addCarInterval = Stats.addCarIntervalHigh;
 
     public HighFreqRoad(int initialWeight){
         super(initialWeight);
+    }
+
+    public int getFrequency(){
+        return this.addCarInterval;
     }
 
 }
